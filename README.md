@@ -1,8 +1,15 @@
-# 2023金秋版：基于Vite4+React的Chrome插件开发教程
+# StudySmart Chrome 插件
 
-基于Vite4的Chrome Extension Manifest V3工程脚手架。
+## 项目简介
 
-本项目架构实现了以下功能：
+**StudySmart** 是一款AI驱动的个性化知识点萃取工具。它能将任意网络内容（如文章、视频字幕）高效转化为高质量、可复用的记忆卡片，并支持导出到专业的记忆平台（如 Anki, RemNote），致力于提升用户的学习效率和知识管理能力。
+
+## 核心功能
+*   **GPT驱动的智能提取**: 利用大语言模型，从选定文本中智能生成多样化的闪卡建议（如词汇、概念、语法、摘要等）。
+*   **高度自定义的Prompt系统**: 用户可以创建和管理自己的Prompt模板，精准控制AI生成卡片的内容和格式，适应各种学习场景。
+*   **便捷的集成与导出**: 支持一键将闪卡导出到 Anki 和 RemNote，同时也提供 CSV/JSON 格式导出，方便数据迁移和管理。
+
+## 技术栈说明
 
 - 基于Vite 4.x搭建
 - 基于Chrome Extension Manifest V3规范
@@ -13,8 +20,6 @@
 - 将popup、content、background目录互相独立，便于团队协作开发维护
 - 按照Chrome Extension最终生成目录要求配置Vite
 - 封装fetch，满足popup、content script、background script跨域请求
-- 实现了完整的Chrome Extension MV3项目Demo。
-
 
 ## 安装项目
 执行：
@@ -56,83 +61,48 @@ npm run build
 yarn build
 ```
 
-## 关于真实API请求（非mock.js模拟请求）
-
-本Demo不包含后端API服务。如在开发环境使用反向代理请求API，或者在build后的正式插件中请求API，请自行搭建后端API服务，返回的数据可参照src/mock.jsx或教程中相应章节的截图。
-
-## 配套教程
-
-📚📚本项目有详细的讲解教程，原文请关注我的微信公众号【卧梅又闻花】📚📚
-
-查阅本项目完整教程：[《2023金秋版：基于Vite4+React的Chrome插件开发教程》](https://mp.weixin.qq.com/s/l4G399Br4-AlwssshydWLA)
-
-### 教程目录
-
-先看下目录了解本教程都有哪些内容。强烈建议按照以下章节一步一步边学边做，可以快速掌握整个项目的原理和细节，在以后遇到新问题的时候，可以知道从哪个环节入手。
+## 目录结构说明
 
 ```
-1 初始化项目
-• 1.1 使用Vite新建项目
-• 1.2 安装并运行项目
-• 1.3 精简项目
-2 Vite基础配置
-• 2.1 配置国内镜像源
-• 2.2 支持Sass/Scss/Less/Stylus
-• 2.3 设置dev环境的Server端口号
-• 2.4 设置dev环境自动打开浏览器
-• 2.5 设置路径别名
-3 Chrome Extension基础
-• 3.1 Manifest V3概述
-• 3.2 Manifest V3 主要新特性
-• 3.3 Chrome Extension的组成
-• 3.4 规划build生成的目录结构
-• 3.5 配置manifest.json
-4 项目目录结构设计
-5 针对Chrome Extension的Vite配置
-• 5.1 设置全局配置
-• 5.2 设置popup的build配置
-• 5.3 设置content script的build配置
-• 5.4 设置background script的build配置
-• 5.5 通过补充脚本合并三个build
-6 设置公用样式及集成Ant Design
-• 6.1 关于样式命名规范
-• 6.2 设置全局公用样式
-• 6.3 集成Ant Design
-• 6.4 设置Antd为中文语言
-7 Popup开发
-• 7.1 引入popup页面
-• 7.2 构建popup的Login页面
-• 7.3 构建popup的Home页面
-• 7.4 构建popup的Account页面
-• 7.5 配置popup页面路由
-• 7.6 构建Nav导航组件
-• 7.7 构建Entry二级路由框架页面
-• 7.8 调整popup入口页面，打通全部路由
-• 7.9 完善Login页面的登录跳转
-• 7.10 设置popup页面尺寸
-8 build项目并载入插件
-9 background script开发
-• 9.1 设置允许运行popup的页面规则
-• 9.2 为什么插件图标在禁用页面不变成灰色
-10 content script开发
-• 10.1 向目标页面注入悬浮球
-• 10.2 在content script中使用Antd
-11 在开发环境中调试content script
-12 API请求
-• 12.1 background pages不支持XMLHttpRequest（axios）
-• 12.2 使用mock.js和mockjs-fetch模拟请求
-• 12.3 封装API及fetch业务逻辑
-• 12.4 委托background script完成API请求
-• 12.5 实现popup的Login页面API请求
-• 12.6 设置开发环境的反向代理请求
-• 12.7 实现content script的API请求
-• 12.8 关键知识点小结
-13 其他说明
-• 13.1 permission权限配置
-• 13.2 以<script>方式向目标页面插入js
-• 13.3 Service Worker调试
-• 13.4 popup页面调试
-• 13.5 批量升级全部项目npm依赖包
-14 项目Git源码
-结束语
+├── public
+│   ├── images
+│   │   └── app.png           # 插件图标
+│   ├── favicon.ico
+│   ├── insert.js           # 插入到目标页面执行的js（非必须，视业务需求而定）
+│   └── manifest.json       # 插件的配置文件
+├── src
+│   ├── api
+│   │   └── index.jsx         # api库
+│   ├── background
+│   │   └── index.jsx         # background script主文件
+│   ├── common
+│   │   ├── fonts             # 字体文件目录
+│   │   ├── images            # 图片文件目录
+│   │   ├── js                # 公用js文件目录
+│   │   └── styles            # 公用样式文件目录
+│   ├── content
+│   │   ├── components      # content 组件目录
+│   │   ├── images          # content 图片目录
+│   │   ├── content.styl    # content 样式
+│   │   └── index.jsx       # content script主文件
+│   ├── popup
+│   │   ├── components      # popup 组件目录
+│   │   ├── pages           # popup 页面目录
+│   │   ├── router
+│   │   │   └── index.jsx   # popup 路由配置文件
+│   │   ├── index.jsx       # popup 主文件
+│   │   └── popup.styl      # popup 样式文件
+│   ├── main.jsx              # 项目主文件，也是popup入口文件
+│   └── mock.jsx              # mock数据文件
+├── .eslintrc.cjs           # ESLint配置文件
+├── .gitignore
+├── build.js                # 补充的build脚本文件
+├── globalConfig.js         # 全局配置文件
+├── index.html              # popup页面入口
+├── package.json
+├── vite.popup.config.js      # popup的Vite配置文件
+├── vite.content.config.js    # content的Vite配置文件
+├── vite.background.config.js # background的Vite配置文件
+└── yarn.lock
 ```
+

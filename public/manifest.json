@@ -1,7 +1,7 @@
 {
-    "name": "Chrome插件V3",
+    "name": "StudySmart",
     "version": "1.0",
-    "description": "基于Vite的chrome插件V3 Demo",
+    "description": "基于AI的Flashcard Generator",
     "manifest_version": 3,
     "background": {
       "service_worker": "background.js"
