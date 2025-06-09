@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom/client'
 import './content.styl'
 import MainModal from '@/content/components/mainModal'
 import Toolbar from '@/content/components/Toolbar'
+import CardDeck from '@/content/components/CardDeck'
 
 function Content() {
     const [mainModalVisiable, setMainModalVisiable] = useState(false)
     const [toolbarPosition, setToolbarPosition] = useState({ x: 0, y: 0 });
     const [selectedText, setSelectedText] = useState('');
+    const [cardDeckVisiable, setCardDeckVisiable] = useState(false)
 
     useEffect(() => {
         const handleMouseUp = (event) => {
-            if (event.target.closest && event.target.closest('.study-smart-toolbar')) {
+            if (event.target.closest && (event.target.closest('.study-smart-toolbar') || event.target.closest('.study-smart-card-deck-sidebar'))) {
                 return;
             }
 
@@ -35,14 +37,24 @@ function Content() {
 
         document.addEventListener('mouseup', handleMouseUp);
 
+        const handleMessage = (request, sender, sendResponse) => {
+            if (request.action === 'toggleCardDeckSidebar') {
+                setCardDeckVisiable(prev => !prev);
+            }
+        };
+
+        chrome.runtime.onMessage.addListener(handleMessage);
+
         return () => {
             document.removeEventListener('mouseup', handleMouseUp);
+            chrome.runtime.onMessage.removeListener(handleMessage);
         };
     }, []);
 
     return (
         <div className="CRX-content">
             <Toolbar position={toolbarPosition} selectedText={selectedText} />
+            {cardDeckVisiable && <CardDeck onClose={() => setCardDeckVisiable(false)} />}
             <div
                 className="content-entry"
                 onClick={() => {

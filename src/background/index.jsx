@@ -113,8 +113,15 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     // TODO: 根据promptId和selectionText执行操作
     console.log(`Executing prompt ${promptId} with text: "${info.selectionText}"`);
   } else if (info.menuItemId === 'flashcard-library') {
-    // TODO: 打开闪卡库页面
+    // 打开闪卡库页面
     console.log('Opening flashcard library');
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0] && tabs[0].id) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          action: 'toggleCardDeckSidebar'
+        });
+      }
+    });
   } else if (info.menuItemId === 'settings') {
     // TODO: 打开设置页面
     // chrome.runtime.openOptionsPage(); // This is a good way to open the settings page if you have one
