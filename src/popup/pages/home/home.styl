@@ -1,11 +1,28 @@
 .P-home
-    position: absolute
-    top: 0
-    bottom: 0
-    width: 100%
-    background: linear-gradient(#f48c8d,#f4c58d)
-    h1
-        margin-top: 50px
-        text-align: center
-        color: #fff
-        font-size: 40px
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 100vh
+    background-color: #f0f2f5
+
+    .ant-card
+        .ant-card-head-title
+            text-align: center
+            font-size: 18px
+            font-weight: 600
+        .ant-card-body
+            padding: 0
+    
+    .menu-item
+        padding: 12px 24px !important
+        cursor: pointer
+
+        &:hover
+            background-color: #f5f5f5
+        
+        .ant-list-item-meta-title
+            font-size: 14px
+            
+        .ant-list-item-meta-avatar
+            .anticon
+                font-size: 16px

@@ -3,6 +3,7 @@ import Login from '@/popup/pages/login'
 import Entry from '@/popup/pages/entry'
 import Home from '@/popup/pages/home'
 import Account from '@/popup/pages/account'
+import NewFlashcard from '@/popup/pages/new-flashcard'
 
 // 全局路由
 export const globalRouters = createHashRouter([
@@ -28,6 +29,11 @@ export const globalRouters = createHashRouter([
                 // 精确匹配"/account"，跳转Account页面
                 path: '/account',
                 element: <Account />,
+            },
+            {
+                // 精确匹配"/new-flashcard"，跳转NewFlashcard页面
+                path: '/new-flashcard',
+                element: <NewFlashcard />,
             },
             {
                 // 如果URL没有"#路由"，跳转Home页面

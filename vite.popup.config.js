@@ -8,6 +8,18 @@ export default defineConfig({
     build: {
         // 输出目录
         outDir: CRX_OUTDIR,
+        rollupOptions: {
+            input: {
+                popup: path.resolve(__dirname, 'index.html'),
+                settings: path.resolve(__dirname, 'settings.html'),
+            },
+            output: {
+                // To avoid chunk name collision
+                entryFileNames: `assets/[name].js`,
+                chunkFileNames: `assets/[name].js`,
+                assetFileNames: `assets/[name].[ext]`,
+            },
+        },
     },
     server: {
         // 指定dev sever的端口号，默认为5173
