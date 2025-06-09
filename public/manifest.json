@@ -1,41 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "StudySmart",
-  "version": "1.0.0",
-  "description": "AI-powered flashcard generation from web content",
-  "permissions": ["storage", "contextMenus", "activeTab", "scripting"],
-  "host_permissions": ["http://*/*", "https://*/*"],
+  "name": "StudySmart (Dev)",
+  "version": "0.1.0",
+  "description": "A smart extension for studying, with hot-reloading.",
+  "options_page": "index.html",
+  "action": {
+    "default_popup": "popup.html"
+  },
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["content.css"]
-    }
-  ],
-  "action": {
-    "default_popup": "popup/index.html",
-    "default_title": "StudySmart",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "32": "icons/icon32.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
-  "options_page": "settings/index.html",
-  "web_accessible_resources": [
-    {
-      "resources": ["sidebar/index.html", "generation/index.html"],
-      "matches": ["<all_urls>"]
-    }
-  ],
-  "icons": {
-    "16": "icons/icon16.png",
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
-  }
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "scripting"
+  ]
 }

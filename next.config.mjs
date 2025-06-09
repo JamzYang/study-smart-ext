@@ -1,13 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  trailingSlash: true,
+  trailingSlash: false,
   skipTrailingSlashRedirect: true,
   distDir: 'dist',
   images: {
     unoptimized: true,
   },
-  assetPrefix: './',
   experimental: {
     esmExternals: false
   },
