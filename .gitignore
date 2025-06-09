@@ -1,0 +1,6 @@
+.idea
+
+##plugins
+.obsidian/plugins/obsidian-git/data.json
+# SpecStory explanation file
+.specstory/.what-is-this.md
