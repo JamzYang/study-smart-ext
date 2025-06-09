@@ -206,3 +206,24 @@ The content area is titled "Export Integrations". It features a tabbed interface
     *   Next to each label is a dropdown menu showing the fields available from the selected Anki Note Type (e.g., "Front", "Back", "Add Reverse"). The mapping is shown, like "Front" -> "Front".
 5.  **Action Button**: At the bottom, a primary "Save" button.
 ```
+
+---
+## 7. 浏览器图标弹出菜单 (Browser Action Popup)
+
+**目标**: 当用户点击浏览器工具栏上的插件图标时，提供一个快速访问核心功能的入口菜单。
+
+### Prompt for AI Image Generator:
+
+```
+UI design, a browser extension popup menu that appears when clicking the extension's icon in the browser toolbar. The design should be modern, clean, and minimalist, with a light theme.
+
+The popup is small and vertically oriented, with rounded corners. It has a main title at the top, "StudySmart".
+
+Below the title, display a list of three distinct menu items. Each item should be in a separate row and clearly clickable, with a hover state effect (e.g., a light gray background).
+
+1.  **New Flashcard**: A row containing a plus-circle icon on the left and the text label "New Flashcard".
+2.  **Card Deck**: A row containing a layer-group icon (representing a deck of cards) on the left and the text label "Card Deck".
+3.  **Settings**: A row containing a gear icon on the left and the text label "Settings".
+
+The overall feeling should be simple and functional, providing immediate access to the main features.
+```
