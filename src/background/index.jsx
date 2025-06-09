@@ -1,35 +1,134 @@
 /*global chrome*/
 import { apiRequest } from '@/api'
-// manifest.json的Permissions配置需添加declarativeContent权限
-chrome.runtime.onInstalled.addListener(function () {
-    // 默认先禁止Page Action。如果不加这一句，则无法生效下面的规则
-    chrome.action.disable()
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
-        // 设置规则
-        let rule = {
-            // 运行插件运行的页面URL规则
-            conditions: [
-                new chrome.declarativeContent.PageStateMatcher({
-                    pageUrl: {
-                        // 适配所有域名以“www.”开头的网页
-                        // hostPrefix: 'www.'
-                        // 适配所有域名以“.antgroup.com”结尾的网页
-                        // hostSuffix: '.antgroup.com',
-                        // 适配域名为“ant-design.antgroup.com”的网页
-                        hostEquals: 'ant-design.antgroup.com',
-                        // 适配https协议的网页
-                        // schemes: ['https'],
-                    },
-                }),
-            ],
-            actions: [new chrome.declarativeContent.ShowAction()],
-        }
-        // 整合所有规则
-        const rules = [rule]
-        // 执行规则
-        chrome.declarativeContent.onPageChanged.addRules(rules)
-    })
-})
+
+// 默认的 prompts
+const defaultPrompts = [
+  {
+    id: 'extract-concept',
+    name: '提取概念',
+    prompt: '请从以下文本中提取核心概念...',
+    showInToolbar: true,
+    order: 0,
+  },
+  {
+    id: 'translate',
+    name: '翻译',
+    prompt: '请将以下文本翻译成中文...',
+    showInToolbar: true,
+    order: 1,
+  },
+  {
+    id: 'summarize',
+    name: '总结',
+    prompt: '请总结以下文本...',
+    showInToolbar: true,
+    order: 2,
+  },
+  {
+    id: 'disabled-prompt',
+    name: '禁用的Prompt',
+    prompt: '这是一个被禁用的prompt',
+    showInToolbar: false,
+    order: 3,
+  }
+];
+
+// 初始化Prompts
+const initializePrompts = (callback) => {
+  chrome.storage.local.get('prompts', (result) => {
+    if (!result.prompts) {
+      chrome.storage.local.set({ prompts: defaultPrompts }, () => {
+        console.log('Default prompts initialized.');
+        if (callback) callback();
+      });
+    } else {
+      console.log('Prompts already exist.');
+      if (callback) callback();
+    }
+  });
+};
+
+// 创建上下文菜单
+const createContextMenu = () => {
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: 'studySmartParent',
+      title: 'StudySmart',
+      contexts: ['selection']
+    });
+
+    chrome.storage.local.get('prompts', (result) => {
+      const prompts = result.prompts || [];
+      const enabledPrompts = prompts
+        .filter(p => p.showInToolbar)
+        .sort((a, b) => a.order - b.order);
+
+      enabledPrompts.forEach((prompt) => {
+        chrome.contextMenus.create({
+          id: `prompt-${prompt.id}`,
+          parentId: 'studySmartParent',
+          title: prompt.name,
+          contexts: ['selection']
+        });
+      });
+
+      if (enabledPrompts.length > 0) {
+        chrome.contextMenus.create({
+          id: 'separator1',
+          parentId: 'studySmartParent',
+          type: 'separator',
+          contexts: ['selection']
+        });
+      }
+
+      chrome.contextMenus.create({
+        id: 'flashcard-library',
+        parentId: 'studySmartParent',
+        title: '闪卡库',
+        contexts: ['selection']
+      });
+
+      chrome.contextMenus.create({
+        id: 'settings',
+        parentId: 'studySmartParent',
+        title: '设置',
+        contexts: ['selection']
+      });
+    });
+  });
+};
+
+// 在插件安装或更新时进行初始化
+chrome.runtime.onInstalled.addListener(() => {
+  initializePrompts(() => {
+    createContextMenu();
+  });
+});
+
+// 监听上下文菜单点击事件
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  console.log('Context menu clicked', info, tab);
+  if (info.menuItemId.startsWith('prompt-')) {
+    const promptId = info.menuItemId.replace('prompt-', '');
+    // TODO: 根据promptId和selectionText执行操作
+    console.log(`Executing prompt ${promptId} with text: "${info.selectionText}"`);
+  } else if (info.menuItemId === 'flashcard-library') {
+    // TODO: 打开闪卡库页面
+    console.log('Opening flashcard library');
+  } else if (info.menuItemId === 'settings') {
+    // TODO: 打开设置页面
+    // chrome.runtime.openOptionsPage(); // This is a good way to open the settings page if you have one
+    console.log('Opening settings');
+  }
+});
+
+// 监听storage变化，动态更新上下文菜单
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  if (namespace === 'local' && changes.prompts) {
+    console.log('Prompts have changed, recreating context menu.');
+    createContextMenu();
+  }
+});
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // 接收来自content script的消息，requset里不允许传递function和file类型的参数

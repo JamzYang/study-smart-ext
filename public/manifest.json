@@ -14,7 +14,7 @@
         "run_at": "document_end"
       }
     ],
-    "permissions": ["storage","declarativeContent", "tabs"],
+    "permissions": ["storage","contextMenus", "tabs"],
     "host_permissions":[],
     "web_accessible_resources": [
       {

@@ -7,7 +7,14 @@ import manifest from './public/manifest.json'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      // Exclude storybook stories
+      exclude: '/**/*.stories.@(js|jsx|ts|tsx)',
+      // Use React's JSX transform
+      jsxRuntime: 'automatic',
+      // Fast refresh is not supported with CRXJS
+      fastRefresh: false
+    }),
     crx({ manifest })
   ],
   resolve: {
